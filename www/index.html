@@ -778,6 +778,7 @@
     let recognition;
     let audioContext;
     let lastDetectionAt = 0;
+    let nativeSpeechListenerReady = false;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const DETECTION_COOLDOWN_MS = 1800;
@@ -956,7 +957,9 @@
     }
 
     function startVoiceCheck() {
-      if (!SpeechRecognition) {
+      const nativeSpeech = getNativeSpeechPlugin();
+
+      if (!hasVoiceSupport()) {
         setVoiceStatus("Voice check unavailable");
         document.getElementById("message").textContent = "Voice check is not available on this browser.";
         updateVoiceControls();
@@ -964,16 +967,41 @@
       }
 
       voiceEnabled = true;
-      ensureRecognition();
       ensureAudioContext();
       setVoiceStatus("Listening");
-      startRecognition();
       updateVoiceControls();
+
+      if (nativeSpeech) {
+        setupNativeSpeechListener(nativeSpeech);
+        nativeSpeech.start()
+          .then(() => {
+            voiceListening = true;
+            setVoiceStatus("Listening");
+            updateVoiceControls();
+          })
+          .catch(error => {
+            voiceEnabled = false;
+            voiceListening = false;
+            const message = error && error.message ? error.message : "Microphone access is blocked.";
+            setVoiceStatus("Voice check paused");
+            document.getElementById("message").textContent = message;
+            updateVoiceControls();
+          });
+        return;
+      }
+
+      ensureRecognition();
+      startRecognition();
     }
 
     function stopVoiceCheck(statusText) {
       voiceEnabled = false;
       voiceListening = false;
+
+      const nativeSpeech = getNativeSpeechPlugin();
+      if (nativeSpeech) {
+        nativeSpeech.stop().catch(() => {});
+      }
 
       if (recognition) {
         try {
@@ -985,6 +1013,42 @@
 
       setVoiceStatus(statusText || "Not listening");
       updateVoiceControls();
+    }
+
+    function getNativeSpeechPlugin() {
+      return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeSpeech;
+    }
+
+    function hasVoiceSupport() {
+      return Boolean(getNativeSpeechPlugin() || SpeechRecognition);
+    }
+
+    function setupNativeSpeechListener(nativeSpeech) {
+      if (nativeSpeechListenerReady || !nativeSpeech.addListener) return;
+
+      nativeSpeechListenerReady = true;
+
+      nativeSpeech.addListener("speechResult", event => {
+        if (!event || !event.transcript) return;
+        checkTranscript(event.transcript);
+      });
+
+      nativeSpeech.addListener("speechStatus", event => {
+        if (!event || typeof event.listening !== "boolean") return;
+        voiceListening = event.listening;
+        if (voiceEnabled) setVoiceStatus(event.listening ? "Listening" : "Voice check paused");
+        updateVoiceControls();
+      });
+
+      nativeSpeech.addListener("speechError", event => {
+        if (!voiceEnabled) return;
+
+        voiceEnabled = false;
+        voiceListening = false;
+        setVoiceStatus("Voice check paused");
+        document.getElementById("message").textContent = event && event.message ? event.message : "Voice check paused.";
+        updateVoiceControls();
+      });
     }
 
     function ensureRecognition() {
@@ -1155,7 +1219,7 @@
       const voiceToggle = document.getElementById("voiceToggle");
       if (!voiceToggle) return;
 
-      if (!SpeechRecognition) {
+      if (!hasVoiceSupport()) {
         voiceToggle.textContent = "Voice Check Unavailable";
         voiceToggle.disabled = true;
         voiceToggle.setAttribute("aria-pressed", "false");
