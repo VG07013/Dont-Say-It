@@ -241,6 +241,80 @@
       line-height: 1;
     }
 
+    .voice-control {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin: 0 0 14px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.66);
+    }
+
+    .voice-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      color: #263246;
+      background: #edf1f7;
+    }
+
+    .voice-toggle::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #94a3b8;
+      box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.16);
+    }
+
+    .voice-toggle.listening {
+      color: white;
+      background: #121826;
+      box-shadow: 0 12px 24px rgba(18, 24, 38, 0.2);
+    }
+
+    .voice-toggle.listening::before {
+      background: var(--good);
+      box-shadow: 0 0 0 5px rgba(31, 157, 85, 0.22);
+    }
+
+    .voice-toggle.detected {
+      color: white;
+      background: var(--bad);
+      animation: pop-alert 420ms ease;
+    }
+
+    .voice-toggle:disabled {
+      color: #7b8798;
+      background: #e5e9f0;
+      cursor: not-allowed;
+      opacity: 0.78;
+    }
+
+    .voice-status {
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    @keyframes pop-alert {
+      0% {
+        transform: scale(1);
+      }
+
+      45% {
+        transform: scale(1.035);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
     .card {
       background: var(--panel-strong);
       border: 1px solid var(--line);
@@ -410,6 +484,11 @@
         margin-bottom: 8px;
       }
 
+      .voice-control {
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
       .card {
         margin: 12px 0 12px;
         padding: 18px;
@@ -503,6 +582,11 @@
       </div>
 
       <p class="small" id="gameDeckInfo"></p>
+
+      <div class="voice-control">
+        <button class="voice-toggle" id="voiceToggle" type="button" aria-pressed="false" onclick="toggleVoiceCheck()">Voice Check Off</button>
+        <div class="voice-status" id="voiceStatus">Not listening</div>
+      </div>
 
       <div class="card">
         <div class="word" id="mainWord">Pizza</div>
@@ -688,9 +772,19 @@
     let timeLeft = 60;
     let roundDuration = 60;
     let timerInterval;
+    let currentForbiddenWords = [];
+    let voiceEnabled = false;
+    let voiceListening = false;
+    let recognition;
+    let audioContext;
+    let lastDetectionAt = 0;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const DETECTION_COOLDOWN_MS = 1800;
 
     loadSavedDeck();
     updateDeckInfo();
+    updateVoiceControls();
 
     function setTime(seconds) {
       document.getElementById("roundTime").value = seconds;
@@ -724,6 +818,7 @@
       loadCard();
       startTimer();
       document.getElementById("message").textContent = "";
+      updateVoiceControls();
     }
 
     function loadSavedDeck() {
@@ -777,6 +872,7 @@
 
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
+          stopVoiceCheck();
           document.getElementById("message").textContent = "Time's up! Final score: " + score;
         }
       }, 1000);
@@ -790,6 +886,7 @@
 
       const currentCard = deck.pop();
       saveDeck();
+      currentForbiddenWords = currentCard.forbidden;
 
       document.getElementById("mainWord").textContent = currentCard.word;
 
@@ -837,6 +934,7 @@
 
     function goHome() {
       clearInterval(timerInterval);
+      stopVoiceCheck();
 
       document.querySelector(".app").classList.remove("playing");
       document.getElementById("game").classList.add("hidden");
@@ -846,6 +944,229 @@
       updateTimerDisplay(getRoundTime(), getRoundTime());
 
       updateDeckInfo();
+    }
+
+    function toggleVoiceCheck() {
+      if (voiceEnabled) {
+        stopVoiceCheck("Voice check off");
+        return;
+      }
+
+      startVoiceCheck();
+    }
+
+    function startVoiceCheck() {
+      if (!SpeechRecognition) {
+        setVoiceStatus("Voice check unavailable");
+        document.getElementById("message").textContent = "Voice check is not available on this browser.";
+        updateVoiceControls();
+        return;
+      }
+
+      voiceEnabled = true;
+      ensureRecognition();
+      ensureAudioContext();
+      setVoiceStatus("Listening");
+      startRecognition();
+      updateVoiceControls();
+    }
+
+    function stopVoiceCheck(statusText) {
+      voiceEnabled = false;
+      voiceListening = false;
+
+      if (recognition) {
+        try {
+          recognition.abort();
+        } catch (error) {
+          // The recognizer can already be closed on iOS.
+        }
+      }
+
+      setVoiceStatus(statusText || "Not listening");
+      updateVoiceControls();
+    }
+
+    function ensureRecognition() {
+      if (recognition || !SpeechRecognition) return;
+
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      recognition.onstart = () => {
+        voiceListening = true;
+        setVoiceStatus("Listening");
+        updateVoiceControls();
+      };
+
+      recognition.onend = () => {
+        voiceListening = false;
+        updateVoiceControls();
+
+        if (voiceEnabled && timeLeft > 0 && !document.getElementById("game").classList.contains("hidden")) {
+          setTimeout(startRecognition, 350);
+        }
+      };
+
+      recognition.onerror = event => {
+        if (!voiceEnabled) return;
+
+        if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+          voiceEnabled = false;
+          setVoiceStatus("Microphone blocked");
+          document.getElementById("message").textContent = "Microphone access is blocked.";
+        } else if (event.error === "no-speech") {
+          setVoiceStatus("Listening");
+        } else {
+          setVoiceStatus("Voice check paused");
+        }
+
+        updateVoiceControls();
+      };
+
+      recognition.onresult = event => {
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          checkTranscript(event.results[i][0].transcript);
+        }
+      };
+    }
+
+    function startRecognition() {
+      if (!voiceEnabled || !recognition || voiceListening || timeLeft <= 0) return;
+
+      try {
+        recognition.start();
+      } catch (error) {
+        // Some browsers throw if start is called while the engine is warming up.
+      }
+    }
+
+    function checkTranscript(transcript) {
+      if (!voiceEnabled || timeLeft <= 0) return;
+
+      const normalizedTranscript = normalizeSpeechText(transcript);
+      const detectedWord = currentForbiddenWords.find(word => transcriptIncludesWord(normalizedTranscript, word));
+
+      if (!detectedWord) return;
+
+      const now = Date.now();
+      if (now - lastDetectionAt < DETECTION_COOLDOWN_MS) return;
+
+      lastDetectionAt = now;
+      announceDetection(detectedWord);
+    }
+
+    function announceDetection(word) {
+      const voiceToggle = document.getElementById("voiceToggle");
+
+      setVoiceStatus("Detected: " + word);
+      document.getElementById("message").textContent = "Word detected: " + word;
+      voiceToggle.classList.add("detected");
+      playDetectedSound();
+      speakDetected();
+
+      if ("vibrate" in navigator) {
+        navigator.vibrate([60, 40, 60]);
+      }
+
+      setTimeout(() => {
+        voiceToggle.classList.remove("detected");
+        if (voiceEnabled) setVoiceStatus("Listening");
+        updateVoiceControls();
+      }, 900);
+    }
+
+    function transcriptIncludesWord(transcript, word) {
+      const normalizedWord = normalizeSpeechText(word);
+      if (!normalizedWord) return false;
+
+      const pattern = normalizedWord
+        .split(" ")
+        .map(escapeRegExp)
+        .join("\\s+");
+
+      return new RegExp("(^|\\s)" + pattern + "(?=\\s|$)").test(transcript);
+    }
+
+    function normalizeSpeechText(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim()
+        .replace(/\s+/g, " ");
+    }
+
+    function escapeRegExp(text) {
+      return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function ensureAudioContext() {
+      if (audioContext) return;
+
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) audioContext = new AudioContext();
+    }
+
+    function playDetectedSound() {
+      ensureAudioContext();
+      if (!audioContext) return;
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      const now = audioContext.currentTime;
+
+      oscillator.type = "square";
+      oscillator.frequency.setValueAtTime(720, now);
+      oscillator.frequency.exponentialRampToValueAtTime(360, now + 0.18);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.28, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start(now);
+      oscillator.stop(now + 0.24);
+    }
+
+    function speakDetected() {
+      if (!("speechSynthesis" in window)) return;
+
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance("Word detected");
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function setVoiceStatus(text) {
+      const voiceStatus = document.getElementById("voiceStatus");
+      if (voiceStatus) voiceStatus.textContent = text;
+    }
+
+    function updateVoiceControls() {
+      const voiceToggle = document.getElementById("voiceToggle");
+      if (!voiceToggle) return;
+
+      if (!SpeechRecognition) {
+        voiceToggle.textContent = "Voice Check Unavailable";
+        voiceToggle.disabled = true;
+        voiceToggle.setAttribute("aria-pressed", "false");
+        setVoiceStatus("Unavailable");
+        return;
+      }
+
+      voiceToggle.disabled = false;
+      voiceToggle.classList.toggle("listening", voiceEnabled && voiceListening);
+      voiceToggle.setAttribute("aria-pressed", voiceEnabled ? "true" : "false");
+      voiceToggle.textContent = voiceEnabled ? "Voice Check On" : "Voice Check Off";
     }
 
     function updateTimerDisplay(seconds, totalSeconds) {

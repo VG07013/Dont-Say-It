@@ -24,6 +24,10 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Don't Say It! uses the microphone only when Voice Check is turned on to detect forbidden words during a round.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Don't Say It! uses speech recognition only when Voice Check is turned on to detect forbidden words during a round.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
