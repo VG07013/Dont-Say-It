@@ -808,10 +808,15 @@
     const irregularWordVariants = {
       cactus: ["cacti"],
       child: ["children"],
+      die: ["dice"],
       foot: ["feet"],
       goose: ["geese"],
+      knife: ["knives"],
+      leaf: ["leaves"],
+      life: ["lives"],
       man: ["men"],
       mouse: ["mice"],
+      ox: ["oxen"],
       person: ["people"],
       tooth: ["teeth"],
       woman: ["women"],
@@ -825,6 +830,7 @@
       drive: ["drives", "driving", "drove", "driven"],
       eat: ["eats", "eating", "ate", "eaten"]
     };
+    const irregularSingularByPlural = buildIrregularSingularByPlural(irregularWordVariants);
 
     loadSavedDeck();
     updateDeckInfo();
@@ -1252,16 +1258,80 @@
       }
 
       const variants = new Set([word]);
+      addWordFamily(word, variants);
+
+      Array.from(variants).forEach(variant => addWordFamily(variant, variants));
+
+      wordVariantCache.set(word, variants);
+      return variants;
+    }
+
+    function buildIrregularSingularByPlural(irregulars) {
+      const lookup = {};
+
+      Object.entries(irregulars).forEach(([singular, variants]) => {
+        variants.forEach(variant => {
+          lookup[variant] = singular;
+        });
+      });
+
+      return lookup;
+    }
+
+    function addWordFamily(word, variants) {
+      addIrregularVariants(word, variants);
+      addSingularVariants(word, variants);
+      addPluralVariants(word, variants);
+      addVerbVariants(word, variants);
+    }
+
+    function addIrregularVariants(word, variants) {
       const irregular = irregularWordVariants[word];
+      const singular = irregularSingularByPlural[word];
 
       if (irregular) {
         irregular.forEach(variant => variants.add(variant));
       }
 
-      addPluralVariants(word, variants);
-      addVerbVariants(word, variants);
-      wordVariantCache.set(word, variants);
-      return variants;
+      if (singular) {
+        variants.add(singular);
+      }
+    }
+
+    function addSingularVariants(word, variants) {
+      if (word.length < 3) return;
+
+      if (word.endsWith("ies") && word.length > 3) {
+        variants.add(word.slice(0, -3) + "y");
+      }
+
+      if (word.endsWith("ves") && word.length > 3) {
+        variants.add(word.slice(0, -3) + "f");
+        variants.add(word.slice(0, -3) + "fe");
+      }
+
+      if (word.endsWith("ches") || word.endsWith("shes")) {
+        variants.add(word.slice(0, -2));
+      } else if (/(ses|xes|zes)$/.test(word)) {
+        variants.add(word.slice(0, -2));
+      } else if (word.endsWith("oes") && word.length > 3) {
+        variants.add(word.slice(0, -2));
+      } else if (word.endsWith("es") && word.length > 3 && !word.endsWith("ees")) {
+        variants.add(word.slice(0, -1));
+      }
+
+      if (word.endsWith("s") && !word.endsWith("ss") && !word.endsWith("us")) {
+        variants.add(word.slice(0, -1));
+      }
+
+      if (word.endsWith("i") && word.length > 2) {
+        variants.add(word.slice(0, -1) + "us");
+      }
+
+      if (word.endsWith("a") && word.length > 2) {
+        variants.add(word.slice(0, -1) + "on");
+        variants.add(word.slice(0, -1) + "um");
+      }
     }
 
     function addPluralVariants(word, variants) {
@@ -1287,6 +1357,26 @@
 
       if (word.endsWith("fe")) {
         variants.add(word.slice(0, -2) + "ves");
+      }
+
+      if (lastLetter === "o") {
+        variants.add(word + "es");
+      }
+
+      if (word.endsWith("us") && word.length > 2) {
+        variants.add(word.slice(0, -2) + "i");
+      }
+
+      if (word.endsWith("is") && word.length > 2) {
+        variants.add(word.slice(0, -2) + "es");
+      }
+
+      if (word.endsWith("on") && word.length > 2) {
+        variants.add(word.slice(0, -2) + "a");
+      }
+
+      if (word.endsWith("um") && word.length > 2) {
+        variants.add(word.slice(0, -2) + "a");
       }
     }
 
