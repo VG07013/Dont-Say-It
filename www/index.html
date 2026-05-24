@@ -606,7 +606,7 @@
   </div>
 
   <script>
-    const cards = [
+    const baseCards = [
       { word: "Pizza", forbidden: ["cheese", "slice", "pepperoni", "oven", "crust"] },
       { word: "Elephant", forbidden: ["trunk", "big", "gray", "zoo", "tusks"] },
       { word: "School", forbidden: ["teacher", "class", "homework", "student", "desk"] },
@@ -765,7 +765,29 @@
       { word: "Key", forbidden: ["lock", "door", "open", "metal", "car"] }
     ];
 
-    const STORAGE_KEY = "dontSayItSavedDeckV1";
+    const TOTAL_CARD_COUNT = 2000;
+
+    const cardModifiers = [
+      { label: "Tiny", forbidden: ["small", "little", "mini", "short", "pocket"] },
+      { label: "Giant", forbidden: ["big", "huge", "large", "tall", "massive"] },
+      { label: "Speedy", forbidden: ["fast", "quick", "race", "zoom", "dash"] },
+      { label: "Sleepy", forbidden: ["tired", "nap", "dream", "bed", "snore"] },
+      { label: "Spooky", forbidden: ["scary", "ghost", "dark", "haunted", "creepy"] },
+      { label: "Royal", forbidden: ["king", "queen", "crown", "castle", "fancy"] },
+      { label: "Space", forbidden: ["rocket", "planet", "stars", "astronaut", "moon"] },
+      { label: "Beach", forbidden: ["sand", "ocean", "waves", "sun", "swim"] },
+      { label: "Winter", forbidden: ["snow", "cold", "ice", "freeze", "coat"] },
+      { label: "Magic", forbidden: ["wand", "spell", "wizard", "trick", "power"] },
+      { label: "Robot", forbidden: ["metal", "machine", "computer", "battery", "program"] },
+      { label: "Rainbow", forbidden: ["colors", "bright", "red", "blue", "sky"] },
+      { label: "Jungle", forbidden: ["trees", "wild", "vines", "green", "animals"] },
+      { label: "Super", forbidden: ["hero", "power", "cape", "strong", "save"] },
+      { label: "Pirate", forbidden: ["ship", "treasure", "map", "sword", "sea"] },
+      { label: "Candy", forbidden: ["sweet", "sugar", "treat", "chocolate", "snack"] }
+    ];
+
+    const cards = buildCards(baseCards);
+    const STORAGE_KEY = "dontSayItSavedDeckV2";
 
     let deck = [];
     let score = 0;
@@ -782,10 +804,68 @@
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const DETECTION_COOLDOWN_MS = 1800;
+    const wordVariantCache = new Map();
+    const irregularWordVariants = {
+      cactus: ["cacti"],
+      child: ["children"],
+      foot: ["feet"],
+      goose: ["geese"],
+      man: ["men"],
+      mouse: ["mice"],
+      person: ["people"],
+      tooth: ["teeth"],
+      woman: ["women"],
+      fly: ["flies", "flying", "flew", "flown"],
+      run: ["runs", "running", "ran"],
+      swim: ["swims", "swimming", "swam", "swum"],
+      sing: ["sings", "singing", "sang", "sung"],
+      ride: ["rides", "riding", "rode", "ridden"],
+      write: ["writes", "writing", "wrote", "written"],
+      bite: ["bites", "biting", "bit", "bitten"],
+      drive: ["drives", "driving", "drove", "driven"],
+      eat: ["eats", "eating", "ate", "eaten"]
+    };
 
     loadSavedDeck();
     updateDeckInfo();
     updateVoiceControls();
+
+    function buildCards(seedCards) {
+      const expandedCards = [...seedCards];
+      let modifierIndex = 0;
+      let seedIndex = 0;
+
+      while (expandedCards.length < TOTAL_CARD_COUNT) {
+        const seedCard = seedCards[seedIndex % seedCards.length];
+        const modifier = cardModifiers[modifierIndex % cardModifiers.length];
+        const generatedCard = buildModifiedCard(seedCard, modifier);
+
+        if (!expandedCards.some(card => card.word === generatedCard.word)) {
+          expandedCards.push(generatedCard);
+        }
+
+        seedIndex++;
+
+        if (seedIndex % seedCards.length === 0) {
+          modifierIndex++;
+        }
+      }
+
+      return expandedCards.slice(0, TOTAL_CARD_COUNT);
+    }
+
+    function buildModifiedCard(seedCard, modifier) {
+      return {
+        word: modifier.label + " " + seedCard.word,
+        forbidden: [...modifier.forbidden.slice(0, 2), ...seedCard.forbidden]
+          .filter(uniqueText)
+          .slice(0, 5)
+      };
+    }
+
+    function uniqueText(value, index, list) {
+      return list.findIndex(item => item.toLowerCase() === value.toLowerCase()) === index;
+    }
 
     function setTime(seconds) {
       document.getElementById("roundTime").value = seconds;
@@ -1143,15 +1223,19 @@
     }
 
     function transcriptIncludesWord(transcript, word) {
-      const normalizedWord = normalizeSpeechText(word);
-      if (!normalizedWord) return false;
+      const transcriptTokens = normalizeSpeechText(transcript).split(" ").filter(Boolean);
+      const wordTokens = normalizeSpeechText(word).split(" ").filter(Boolean);
 
-      const pattern = normalizedWord
-        .split(" ")
-        .map(escapeRegExp)
-        .join("\\s+");
+      if (wordTokens.length === 0 || transcriptTokens.length < wordTokens.length) return false;
 
-      return new RegExp("(^|\\s)" + pattern + "(?=\\s|$)").test(transcript);
+      const variantTokens = wordTokens.map(getWordVariants);
+
+      for (let i = 0; i <= transcriptTokens.length - wordTokens.length; i++) {
+        const found = variantTokens.every((variants, offset) => variants.has(transcriptTokens[i + offset]));
+        if (found) return true;
+      }
+
+      return false;
     }
 
     function normalizeSpeechText(text) {
@@ -1162,8 +1246,88 @@
         .replace(/\s+/g, " ");
     }
 
-    function escapeRegExp(text) {
-      return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    function getWordVariants(word) {
+      if (wordVariantCache.has(word)) {
+        return wordVariantCache.get(word);
+      }
+
+      const variants = new Set([word]);
+      const irregular = irregularWordVariants[word];
+
+      if (irregular) {
+        irregular.forEach(variant => variants.add(variant));
+      }
+
+      addPluralVariants(word, variants);
+      addVerbVariants(word, variants);
+      wordVariantCache.set(word, variants);
+      return variants;
+    }
+
+    function addPluralVariants(word, variants) {
+      if (word.length < 2) return;
+
+      const lastLetter = word[word.length - 1];
+      const secondLastLetter = word[word.length - 2];
+      const endsWithSibilant = /(s|x|z|ch|sh)$/.test(word);
+
+      variants.add(word + "s");
+
+      if (endsWithSibilant) {
+        variants.add(word + "es");
+      }
+
+      if (lastLetter === "y" && !isVowel(secondLastLetter)) {
+        variants.add(word.slice(0, -1) + "ies");
+      }
+
+      if (lastLetter === "f") {
+        variants.add(word.slice(0, -1) + "ves");
+      }
+
+      if (word.endsWith("fe")) {
+        variants.add(word.slice(0, -2) + "ves");
+      }
+    }
+
+    function addVerbVariants(word, variants) {
+      if (word.length < 3) return;
+
+      const lastLetter = word[word.length - 1];
+      const secondLastLetter = word[word.length - 2];
+
+      variants.add(word + "s");
+      variants.add(word + "ed");
+      variants.add(word + "ing");
+
+      if (lastLetter === "e") {
+        variants.add(word + "d");
+        variants.add(word.slice(0, -1) + "ing");
+      }
+
+      if (lastLetter === "y" && !isVowel(secondLastLetter)) {
+        variants.add(word.slice(0, -1) + "ies");
+        variants.add(word.slice(0, -1) + "ied");
+      }
+
+      if (shouldDoubleFinalConsonant(word)) {
+        variants.add(word + lastLetter + "ed");
+        variants.add(word + lastLetter + "ing");
+      }
+    }
+
+    function shouldDoubleFinalConsonant(word) {
+      if (word.length < 3) return false;
+
+      const last = word[word.length - 1];
+      const middle = word[word.length - 2];
+      const first = word[word.length - 3];
+
+      return !isVowel(first) && isVowel(middle) && !isVowel(last) && !"wxy".includes(last);
+    }
+
+    function isVowel(letter) {
+      return "aeiou".includes(letter);
     }
 
     function ensureAudioContext() {
