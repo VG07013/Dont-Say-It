@@ -767,27 +767,187 @@
 
     const TOTAL_CARD_COUNT = 2000;
 
-    const cardModifiers = [
-      { label: "Tiny", forbidden: ["small", "little", "mini", "short", "pocket"] },
-      { label: "Giant", forbidden: ["big", "huge", "large", "tall", "massive"] },
-      { label: "Speedy", forbidden: ["fast", "quick", "race", "zoom", "dash"] },
-      { label: "Sleepy", forbidden: ["tired", "nap", "dream", "bed", "snore"] },
-      { label: "Spooky", forbidden: ["scary", "ghost", "dark", "haunted", "creepy"] },
-      { label: "Royal", forbidden: ["king", "queen", "crown", "castle", "fancy"] },
-      { label: "Space", forbidden: ["rocket", "planet", "stars", "astronaut", "moon"] },
-      { label: "Beach", forbidden: ["sand", "ocean", "waves", "sun", "swim"] },
-      { label: "Winter", forbidden: ["snow", "cold", "ice", "freeze", "coat"] },
-      { label: "Magic", forbidden: ["wand", "spell", "wizard", "trick", "power"] },
-      { label: "Robot", forbidden: ["metal", "machine", "computer", "battery", "program"] },
-      { label: "Rainbow", forbidden: ["colors", "bright", "red", "blue", "sky"] },
-      { label: "Jungle", forbidden: ["trees", "wild", "vines", "green", "animals"] },
-      { label: "Super", forbidden: ["hero", "power", "cape", "strong", "save"] },
-      { label: "Pirate", forbidden: ["ship", "treasure", "map", "sword", "sea"] },
-      { label: "Candy", forbidden: ["sweet", "sugar", "treat", "chocolate", "snack"] }
+    const ordinaryWordPool = [
+      "pizza", "elephant", "school", "ice", "cream", "soccer", "birthday", "ocean", "robot", "superhero", "movie", "dog",
+      "rain", "apple", "car", "book", "dragon", "guitar", "basketball", "computer", "doctor", "airplane", "train", "cookie",
+      "banana", "lion", "penguin", "bicycle", "castle", "magic", "volcano", "rainbow", "spider", "shark", "moon", "sun",
+      "piano", "camera", "snowman", "pirate", "ninja", "mermaid", "rocket", "clown", "dinosaur", "minecraft", "fortnite", "mario",
+      "pokemon", "chair", "bed", "toothbrush", "backpack", "pencil", "crayon", "balloon", "kite", "swing", "slide", "zoo",
+      "farm", "cow", "horse", "chicken", "monkey", "tiger", "giraffe", "turtle", "frog", "bee", "butterfly", "ant",
+      "snake", "octopus", "whale", "dolphin", "starfish", "beach", "mountain", "forest", "desert", "cactus", "flower", "tree",
+      "pumpkin", "ghost", "vampire", "zombie", "santa", "snowflake", "present", "candy", "popcorn", "hot", "burger", "fries",
+      "pancake", "donut", "cupcake", "baseball", "football", "tennis", "swimming", "skateboard", "roller", "coaster", "ferris", "wheel",
+      "museum", "library", "restaurant", "grocery", "store", "airport", "hospital", "police", "officer", "chef", "artist", "singer",
+      "dancer", "astronaut", "scientist", "teacher", "dentist", "mailman", "queen", "knight", "wizard", "unicorn", "alien", "planet",
+      "star", "cloud", "thunder", "lightning", "wind", "fire", "mirror", "clock", "lamp", "door", "window", "remote",
+      "blanket", "pillow", "shoes", "hat", "gloves", "sunglasses", "soap", "shampoo", "towel", "trash", "key", "home",
+      "has", "but", "time", "news", "out", "see", "who", "now", "help", "view", "how", "its",
+      "find", "date", "back", "top", "people", "had", "list", "name", "state", "year", "day", "health",
+      "world", "work", "music", "buy", "data", "make", "system", "post", "city", "add", "number", "please",
+      "available", "message", "after", "best", "jan", "good", "well", "info", "public", "books", "high", "links",
+      "review", "years", "items", "read", "group", "need", "said", "does", "set", "general", "research", "university",
+      "january", "mail", "full", "map", "reviews", "program", "life", "know", "games", "way", "days", "management",
+      "part", "great", "united", "hotel", "real", "item", "center", "travel", "comments", "made", "report", "off",
+      "member", "details", "line", "hotels", "did", "send", "right", "type", "local", "results", "office", "education",
+      "national", "design", "take", "posted", "internet", "address", "community", "states", "area", "want", "subject", "family",
+      "long", "based", "code", "show", "even", "black", "check", "special", "prices", "website", "index", "women",
+      "sign", "link", "open", "technology", "south", "case", "project", "same", "pages", "version", "section", "own",
+      "found", "sports", "house", "related", "security", "both", "county", "american", "game", "members", "power", "care",
+      "network", "down", "systems", "total", "place", "end", "following", "access", "think", "north", "resources", "current",
+      "big", "media", "law", "control", "water", "history", "pictures", "size", "art", "personal", "since", "including",
+      "guide", "shop", "directory", "board", "location", "change", "white", "text", "small", "rating", "rate", "government",
+      "children", "during", "usa", "return", "students", "shopping", "times", "sites", "level", "digital", "form", "events",
+      "love", "old", "john", "main", "call", "hours", "department", "title", "non", "another", "why", "shall",
+      "property", "class", "still", "money", "quality", "every", "listing", "content", "country", "private", "little", "visit",
+      "save", "tools", "low", "december", "compare", "movies", "include", "college", "value", "article", "york", "man",
+      "card", "jobs", "provide", "food", "source", "author", "different", "press", "learn", "around", "print", "course",
+      "job", "canada", "process", "teen", "room", "stock", "training", "too", "point", "join", "science", "men",
+      "categories", "advanced", "west", "look", "english", "left", "team", "estate", "box", "conditions", "select", "gay",
+      "week", "category", "note", "live", "large", "gallery", "table", "however", "june", "october", "november", "market",
+      "really", "action", "start", "series", "model", "features", "air", "industry", "plan", "human", "provided", "yes",
+      "required", "cost", "march", "september", "better", "say", "questions", "july", "going", "medical", "test", "friend",
+      "come", "dec", "study", "staff", "articles", "san", "feedback", "again", "play", "looking", "issues", "april",
+      "never", "complete", "street", "topic", "comment", "financial", "things", "working", "against", "standard", "person", "below",
+      "less", "party", "payment", "equipment", "student", "let", "programs", "offers", "legal", "above", "recent", "park",
+      "stores", "side", "act", "problem", "red", "give", "memory", "social", "august", "quote", "language", "story",
+      "sell", "options", "experience", "rates", "create", "body", "young", "america", "important", "field", "few", "east",
+      "paper", "single", "age", "activities", "club", "example", "girls", "additional", "latest", "road", "gift", "question",
+      "changes", "night", "hard", "texas", "oct", "pay", "status", "browse", "issue", "range", "building", "seller",
+      "court", "february", "always", "result", "audio", "light", "write", "war", "nov", "offer", "blue", "groups",
+      "easy", "given", "event", "release", "analysis", "request", "fax", "china", "making", "picture", "needs", "possible",
+      "might", "yet", "month", "major", "areas", "future", "space", "committee", "hand", "cards", "problems", "london",
+      "washington", "meeting", "become", "interest", "child", "keep", "enter", "california", "share", "similar", "garden", "schools",
+      "million", "added", "reference", "companies", "listed", "baby", "learning", "energy", "run", "delivery", "net", "popular",
+      "term", "film", "stories", "put", "computers", "journal", "reports", "try", "welcome", "central", "president", "notice",
+      "original", "head", "radio", "until", "cell", "color", "self", "council", "away", "includes", "track", "australia",
+      "discussion", "archive", "once", "others", "agreement", "format", "least", "society", "months", "log", "safety", "friends",
+      "sure", "trade", "edition", "cars", "messages", "marketing", "tell", "further", "updated", "able", "having", "provides",
+      "david", "fun", "already", "green", "studies", "close", "common", "drive", "specific", "several", "gold", "feb",
+      "living", "sep", "collection", "called", "short", "arts", "lot", "ask", "display", "limited", "powered", "solutions",
+      "means", "director", "daily", "past", "natural", "whether", "due", "period", "planning", "database", "official", "weather",
+      "mar", "land", "average", "done", "technical", "france", "pro", "region", "island", "record", "direct", "microsoft",
+      "conference", "records", "district", "calendar", "costs", "style", "front", "statement", "parts", "aug", "ever", "early",
+      "sound", "resource", "either", "ago", "document", "word", "works", "material", "bill", "apr", "written", "talk",
+      "federal", "rules", "final", "tickets", "thing", "centre", "cheap", "kids", "finance", "true", "minutes", "else",
+      "mark", "rock", "gifts", "europe", "reading", "topics", "bad", "individual", "tips", "plus", "auto", "cover",
+      "usually", "edit", "together", "percent", "fast", "function", "fact", "unit", "getting", "global", "tech", "meet",
+      "far", "economic", "player", "projects", "lyrics", "often", "subscribe", "submit", "germany", "amount", "watch", "included",
+      "feel", "though", "bank", "risk", "thanks", "everything", "deals", "various", "words", "jul", "production", "commercial",
+      "james", "weight", "town", "heart", "received", "choose", "treatment", "newsletter", "archives", "points", "knowledge", "magazine",
+      "error", "jun", "girl", "currently", "toys", "registered", "clear", "golf", "receive", "methods", "chapter", "makes",
+      "protection", "policies", "wide", "beauty", "manager", "india", "position", "taken", "sort", "listings", "models", "michael",
+      "known", "half", "cases", "step", "florida", "simple", "quick", "none", "wireless", "license", "paul", "friday",
+      "lake", "whole", "annual", "published", "later", "basic", "shows", "corporate", "church", "method", "purchase", "customers",
+      "active", "response", "practice", "hardware", "figure", "materials", "holiday", "chat", "enough", "designed", "along", "death",
+      "writing", "speed", "countries", "loss", "face", "brand", "discount", "higher", "effects", "created", "remember", "standards",
+      "oil", "bit", "yellow", "increase", "advertise", "kingdom", "base", "near", "thought", "stuff", "french", "storage",
+      "japan", "doing", "entry", "stay", "nature", "orders", "africa", "summary", "turn", "mean", "growth", "notes",
+      "agency", "king", "monday", "european", "activity", "copy", "although", "western", "income", "force", "cash", "employment",
+      "overall", "bay", "river", "commission", "package", "contents", "seen", "players", "engine", "port", "album", "regional",
+      "stop", "supplies", "started", "bar", "institute", "views", "plans", "double", "build", "screen", "exchange", "types",
+      "soon", "sponsored", "lines", "electronic", "continue", "benefits", "needed", "season", "apply", "held", "printer", "condition",
+      "effective", "believe", "effect", "asked", "eur", "mind", "sunday", "selection", "lost", "tour", "menu", "volume",
+      "cross", "hope", "silver", "wish", "inside", "solution", "mature", "role", "rather", "weeks", "addition", "came",
+      "supply", "certain", "usr", "executive", "running", "lower", "necessary", "union", "jewelry", "according", "clothing", "mon",
+      "com", "particular", "fine", "names", "robert", "homepage", "hour", "gas", "skills", "bush", "islands", "advice",
+      "career", "military", "rental", "decision", "leave", "british", "teens", "pre", "huge", "sat", "woman", "facilities",
+      "zip", "bid", "kind", "sellers", "middle", "move", "cable", "taking", "values", "division", "coming", "tuesday",
+      "object", "lesbian", "machine", "logo", "length", "actually", "nice", "score", "statistics", "client", "returns", "capital",
+      "follow", "sample", "investment", "sent", "shown", "saturday", "christmas", "england", "culture", "band", "flash", "lead",
+      "george", "choice", "went", "starting", "fri", "thursday", "courses", "consumer", "foreign", "outside", "furniture", "levels",
+      "channel", "letter", "mode", "ideas", "wednesday", "structure", "fund", "summer", "allow", "degree", "contract", "button",
+      "releases", "wed", "homes", "super", "male", "matter", "custom", "virginia", "almost", "took", "located", "multiple",
+      "asian", "editor", "inn", "industrial", "cause", "potential", "song", "cnet", "ltd", "los", "focus", "late",
+      "fall", "featured", "idea", "rooms", "female", "inc", "win", "associated", "thomas", "primary", "numbers", "reason",
+      "tool", "browser", "spring", "foundation", "answer", "voice", "friendly", "schedule", "documents", "purpose", "feature", "comes",
+      "approach", "cameras", "brown", "physical", "operating", "hill", "maps", "medicine", "deal", "hold", "ratings", "chicago",
+      "forms", "glass", "happy", "tue", "smith", "wanted", "developed", "thank", "safe", "unique", "survey", "prior",
+      "telephone", "sport", "ready", "feed", "animal", "sources", "mexico", "population", "regular", "secure", "navigation", "operations",
+      "therefore", "simply", "evidence", "station", "christian", "round", "favorite", "understand", "option", "master", "valley", "recently",
+      "probably", "thu", "rentals", "sea", "built", "cut", "worldwide", "improve", "connection", "publisher", "hall", "larger",
+      "anti", "networks", "earth", "parents", "impact", "transfer", "kitchen", "strong", "tel", "carolina", "wedding", "properties",
+      "ground", "overview", "ship", "owners", "excellent", "paid", "italy", "perfect", "hair", "kit", "classic", "basis",
+      "command", "cities", "william", "express", "award", "distance", "peter", "assessment", "ensure", "thus", "wall", "involved",
+      "extra", "especially", "interface", "partners", "budget", "rated", "guides", "success", "maximum", "operation", "existing", "quite",
+      "selected", "boy", "patients", "beautiful", "warning", "locations", "vote", "forward", "flowers", "stars", "lists", "owner",
+      "retail", "animals", "useful", "directly", "ways", "est", "son", "providing", "rule", "housing", "takes", "iii",
+      "gmt", "bring", "catalog", "searches", "max", "trying", "mother", "authority", "considered", "told", "traffic", "programme",
+      "joined", "input", "strategy", "feet", "agent", "valid", "bin", "modern", "senior", "ireland", "teaching", "grand",
+      "testing", "trial", "charge", "units", "instead", "canadian", "cool", "normal", "wrote", "enterprise", "ships", "entire",
+      "leading", "metal", "positive", "fitness", "chinese", "opinion", "asia", "abstract", "uses", "output", "funds", "greater",
+      "likely", "develop", "employees", "artists", "processing", "resolution", "guest", "seems", "pass", "relations", "trust", "van",
+      "contains", "session", "multi", "republic", "fees", "components", "vacation", "century", "academic", "assistance", "completed", "skin",
+      "graphics", "indian", "prev", "mary", "expected", "ring", "grade", "pacific", "pop", "filter", "mailing", "vehicle",
+      "longer", "consider", "int", "northern", "behind", "panel", "floor", "german", "buying", "match", "proposed", "default",
+      "require", "iraq", "boys", "outdoor", "deep", "morning", "otherwise", "allows", "rest", "protein", "plant", "reported",
+      "hit", "pool", "mini", "partner", "disclaimer", "authors", "boards", "faculty", "parties", "fish", "membership", "mission",
+      "eye", "string", "sense", "modified", "pack", "released", "stage", "internal", "goods", "born", "unless", "richard",
+      "detailed", "japanese", "race", "approved", "background", "except", "character", "ability", "maybe", "functions", "moving", "brands",
+      "places", "pretty", "trademarks", "spain", "southern", "winter", "battery", "youth", "pressure", "submitted", "boston", "debt",
+      "keywords", "medium", "television", "interested", "core", "break", "purposes", "throughout", "sets", "dance", "wood", "defined",
+      "papers", "playing", "awards", "fee", "studio", "reader", "virtual", "device", "answers", "rent", "las", "dark",
+      "external", "regarding", "min", "offered", "theory", "enjoy", "remove", "aid", "surface", "minimum", "visual", "variety",
+      "teachers", "isbn", "martin", "manual", "block", "subjects", "agents", "increased", "repair", "fair", "civil", "steel",
+      "songs", "fixed", "wrong", "beginning", "hands", "associates", "finally", "classes", "paris", "ohio", "gets", "sector",
+      "capacity", "requires", "jersey", "fat", "fully", "father", "electric", "saw", "quotes", "driver", "businesses", "dead",
+      "respect", "unknown", "specified", "mike", "trip", "pst", "worth", "procedures", "poor", "eyes", "workers", "georgia",
+      "peace", "campus", "tom", "showing", "creative", "coast", "benefit", "progress", "funding", "devices", "lord", "grant",
+      "sub", "agree", "fiction", "hear", "sometimes", "watches", "careers", "beyond", "goes", "families", "led", "fan",
+      "transport", "wife", "evaluation", "accepted", "former", "hits", "zone", "complex", "cat", "galleries", "references", "die",
+      "presented", "jack", "flat", "flow", "agencies", "literature", "respective", "parent", "spanish", "michigan", "columbia", "setting",
+      "scale", "stand", "economy", "highest", "helpful", "monthly", "critical", "frame", "musical", "definition", "secretary", "angeles",
+      "networking", "path", "australian", "employee", "chief", "gives", "bottom", "magazines", "packages", "detail", "francisco", "laws",
+      "changed", "pet", "heard", "begin", "colorado", "royal", "clean", "switch", "russian", "largest", "african", "guy",
+      "titles", "relevant", "guidelines", "justice", "connect", "bible", "dev", "cup", "basket", "applied", "weekly", "vol",
+      "described", "demand", "suite", "vegas", "square", "chris", "attention", "advance", "skip", "diet", "army", "auction",
+      "gear", "lee", "difference", "allowed", "correct", "charles", "nation", "selling", "lots", "piece", "sheet", "firm",
+      "older", "illinois", "elements", "species", "jump", "cells", "module", "resort", "facility", "random", "pricing", "dvds",
+      "minister", "motion", "looks", "fashion", "directions", "visitors", "monitor", "trading", "calls", "coverage", "couple", "giving",
+      "chance", "vision", "ball", "ending", "clients", "actions", "listen", "discuss", "accept", "automotive", "goal", "successful",
+      "sold", "clinical", "situation", "sciences", "markets", "lowest", "highly", "publishing", "appear", "emergency", "developing", "lives",
+      "currency", "leather", "determine", "palm", "patient", "actual", "historical", "stone", "bob", "commerce", "ringtones", "perhaps",
+      "persons", "difficult", "scientific", "satellite", "fit", "tests", "village", "accounts", "amateur", "met", "pain", "factors",
+      "coffee", "settings", "buyer", "cultural", "steve", "easily", "oral", "ford", "poster", "edge", "functional", "root",
+      "closed", "holidays", "pink", "zealand", "balance", "monitoring", "graduate", "shot", "initial", "label", "thinking", "scott",
+      "llc", "sec", "recommend", "league", "waste", "minute", "bus", "provider", "optional", "dictionary", "cold", "accounting",
+      "sections", "fishing", "effort", "phase", "fields", "bag", "fantasy", "letters", "motor", "professor", "context", "shirt",
+      "apparel", "generally", "continued", "foot", "mass", "crime", "count", "breast", "techniques", "johnson", "quickly", "dollars",
+      "websites", "claim", "driving", "permission", "patch", "heat", "wild", "measures", "generation", "kansas", "miss", "chemical",
+      "task", "reduce", "brought", "nor", "component", "enable", "exercise", "bug", "mid", "guarantee", "leader", "diamond",
+      "israel", "processes", "soft", "alone", "meetings", "seconds", "jones", "arizona", "keyword", "interests", "flight", "congress",
+      "fuel", "walk", "produced", "italian", "paperback", "wait", "supported", "pocket", "saint", "rose", "freedom", "argument",
+      "creating", "jim", "joint", "premium", "providers", "fresh", "characters", "factor", "growing", "thousands", "stream", "apartments",
+      "pick", "hearing", "eastern", "auctions", "therapy", "entries", "dates", "generated", "signed", "upper", "serious", "prime",
+      "limit", "began", "louis", "steps", "errors", "shops", "del", "efforts", "informed", "thoughts", "creek", "worked",
+      "quantity", "urban", "practices", "sorted", "reporting", "essential", "tours", "platform", "load", "affiliate", "labor", "nursing",
+      "defense", "machines", "designated", "tags", "heavy", "covered", "recovery", "joe", "guys", "integrated", "merchant", "expert",
+      "universal", "protect", "drop", "solid", "languages", "became", "orange", "compliance", "vehicles", "prevent", "theme", "rich",
+      "campaign", "marine", "finding", "examples", "saying", "spirit", "claims", "challenge", "acceptance", "strategies", "seem", "affairs",
+      "touch", "intended", "towards", "goals", "hire", "election", "suggest", "branch", "charges", "serve", "affiliates", "reasons",
+      "mount", "smart", "talking", "gave", "ones", "latin", "multimedia", "avoid", "certified", "manage", "corner", "rank",
+      "computing", "oregon", "element", "birth", "virus", "requests", "separate", "quarter", "procedure", "leadership", "tables", "define",
+      "racing", "facts", "breakfast", "kong", "column", "plants", "faith", "chain", "developer", "identify", "avenue", "missing",
+      "died", "domestic", "moved", "houston", "reach", "comparison", "mental", "viewed", "moment", "extended", "sequence", "inch",
+      "attack", "sorry", "centers", "opening", "damage", "lab", "reserve", "recipes", "gamma", "plastic", "produce", "snow",
+      "placed", "truth", "counter", "failure", "follows", "weekend", "dollar", "camp", "ontario", "des", "minnesota", "films",
+      "bridge", "native", "fill", "williams", "movement", "printing", "owned", "approval", "draft", "chart", "played", "contacts",
+      "jesus", "readers", "clubs", "jackson", "equal", "adventure", "matching", "offering", "shirts", "profit", "leaders", "posters",
+      "assistant", "variable", "ave", "expect", "parking", "headlines", "yesterday", "compared", "determined", "wholesale", "workshop", "russia",
+      "gone", "codes", "kinds", "extension", "seattle", "statements", "golden", "completely", "teams", "fort", "lighting", "senate",
+      "forces", "funny", "brother", "gene", "turned", "portable", "tried", "electrical"
     ];
 
-    const cards = buildCards(baseCards);
-    const STORAGE_KEY = "dontSayItSavedDeckV2";
+    const fallbackForbiddenSets = [
+      ["word", "answer", "name", "guess", "clue"],
+      ["thing", "stuff", "idea", "talk", "tell"],
+      ["person", "place", "object", "describe", "hint"],
+      ["make", "find", "look", "sound", "called"],
+      ["same", "kind", "type", "example", "meaning"],
+      ["common", "known", "think", "say", "name"]
+    ];
+
+    const cards = buildCards(baseCards, ordinaryWordPool);
+    const STORAGE_KEY = "dontSayItSavedDeckV3";
 
     let deck = [];
     let score = 0;
@@ -836,37 +996,41 @@
     updateDeckInfo();
     updateVoiceControls();
 
-    function buildCards(seedCards) {
-      const expandedCards = [...seedCards];
-      let modifierIndex = 0;
-      let seedIndex = 0;
+    function buildCards(seedCards, wordPool) {
+      const hintMap = buildSeedHintMap(seedCards);
 
-      while (expandedCards.length < TOTAL_CARD_COUNT) {
-        const seedCard = seedCards[seedIndex % seedCards.length];
-        const modifier = cardModifiers[modifierIndex % cardModifiers.length];
-        const generatedCard = buildModifiedCard(seedCard, modifier);
-
-        if (!expandedCards.some(card => card.word === generatedCard.word)) {
-          expandedCards.push(generatedCard);
-        }
-
-        seedIndex++;
-
-        if (seedIndex % seedCards.length === 0) {
-          modifierIndex++;
-        }
-      }
-
-      return expandedCards.slice(0, TOTAL_CARD_COUNT);
+      return wordPool.slice(0, TOTAL_CARD_COUNT).map((word, index) => ({
+        word: toTitleCase(word),
+        forbidden: buildForbiddenWords(word, hintMap, index)
+      }));
     }
 
-    function buildModifiedCard(seedCard, modifier) {
-      return {
-        word: modifier.label + " " + seedCard.word,
-        forbidden: [...modifier.forbidden.slice(0, 2), ...seedCard.forbidden]
-          .filter(uniqueText)
-          .slice(0, 5)
-      };
+    function buildSeedHintMap(seedCards) {
+      const hintMap = new Map();
+
+      seedCards.forEach(card => {
+        normalizeSpeechText(card.word).split(" ").filter(Boolean).forEach(word => {
+          const hints = hintMap.get(word) || [];
+          card.forbidden.forEach(hint => hints.push(hint));
+          hintMap.set(word, hints.filter(uniqueText));
+        });
+      });
+
+      return hintMap;
+    }
+
+    function buildForbiddenWords(word, hintMap, index) {
+      const curatedHints = hintMap.get(word) || [];
+      const fallbackHints = fallbackForbiddenSets[index % fallbackForbiddenSets.length];
+
+      return [...curatedHints, ...fallbackHints]
+        .filter(uniqueText)
+        .filter(hint => normalizeSpeechText(hint) !== word)
+        .slice(0, 5);
+    }
+
+    function toTitleCase(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
     }
 
     function uniqueText(value, index, list) {
@@ -973,7 +1137,7 @@
 
       const currentCard = deck.pop();
       saveDeck();
-      currentForbiddenWords = currentCard.forbidden;
+      currentForbiddenWords = [currentCard.word, ...currentCard.forbidden];
 
       document.getElementById("mainWord").textContent = currentCard.word;
 
