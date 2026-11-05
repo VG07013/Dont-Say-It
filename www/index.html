@@ -446,6 +446,31 @@
       display: none;
     }
 
+    .legal-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 18px;
+      margin: 18px 0 0;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .legal-links a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 2px;
+    }
+
+    .legal-links a:active {
+      color: var(--brand);
+    }
+
+    .legal-credit {
+      text-align: center;
+      margin: 6px 0 0;
+    }
+
     @media (min-width: 340px) {
       .bad-words {
         grid-template-columns: 1fr 1fr;
@@ -576,6 +601,13 @@
       </div>
 
       <p class="small" id="deckInfo"></p>
+
+      <nav class="legal-links" aria-label="Privacy, terms and support">
+        <a href="https://vgcreativelabs.com/dont-say-it/">Privacy Policy</a>
+        <a href="https://vgcreativelabs.com/terms/">Terms of Use</a>
+        <a href="mailto:support@vgcreativelabs.com?subject=Don%27t%20Say%20It%21%20support">Support</a>
+      </nav>
+      <p class="small legal-credit">© VG Creative Labs LLC</p>
     </div>
 
     <div id="game" class="hidden">
