@@ -26,3 +26,13 @@ python3 -m http.server 4173
 ```
 
 Then open `http://localhost:4173`.
+
+## Company
+
+Don't Say It! is a VG Creative Labs LLC product.
+
+- Privacy policy: https://vgcreativelabs.com/dont-say-it/
+- Terms of Use: https://vgcreativelabs.com/terms/
+- Support: support@vgcreativelabs.com
+
+The home screen links all three. If the app ever adds an SDK, network call or new stored data, update the privacy policy (site repo `VG07013/vg-creative-labs`, `dont-say-it/index.html`) and App Privacy in App Store Connect the same day.
