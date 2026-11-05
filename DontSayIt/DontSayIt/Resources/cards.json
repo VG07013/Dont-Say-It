@@ -1,0 +1,1002 @@
+[
+  {
+    "word": "Pancake",
+    "banned": [
+      "Breakfast",
+      "Syrup",
+      "Flip",
+      "Batter",
+      "Waffle"
+    ]
+  },
+  {
+    "word": "Volcano",
+    "banned": [
+      "Lava",
+      "Erupt",
+      "Mountain",
+      "Hot",
+      "Ash"
+    ]
+  },
+  {
+    "word": "Lighthouse",
+    "banned": [
+      "Ocean",
+      "Ship",
+      "Tower",
+      "Beam",
+      "Coast"
+    ]
+  },
+  {
+    "word": "Penguin",
+    "banned": [
+      "Bird",
+      "Ice",
+      "Waddle",
+      "Tuxedo",
+      "Antarctica"
+    ]
+  },
+  {
+    "word": "Birthday",
+    "banned": [
+      "Cake",
+      "Candles",
+      "Party",
+      "Present",
+      "Age"
+    ]
+  },
+  {
+    "word": "Pizza",
+    "banned": [
+      "Cheese",
+      "Slice",
+      "Pepperoni",
+      "Italy",
+      "Delivery"
+    ]
+  },
+  {
+    "word": "Elephant",
+    "banned": [
+      "Trunk",
+      "Big",
+      "Gray",
+      "Tusks",
+      "Peanuts"
+    ]
+  },
+  {
+    "word": "Toothbrush",
+    "banned": [
+      "Teeth",
+      "Paste",
+      "Bristles",
+      "Bathroom",
+      "Dentist"
+    ]
+  },
+  {
+    "word": "Rainbow",
+    "banned": [
+      "Colors",
+      "Sky",
+      "Arc",
+      "Storm",
+      "Gold"
+    ]
+  },
+  {
+    "word": "Snowman",
+    "banned": [
+      "Carrot",
+      "Winter",
+      "Cold",
+      "Build",
+      "Melt"
+    ]
+  },
+  {
+    "word": "Astronaut",
+    "banned": [
+      "Space",
+      "Rocket",
+      "Moon",
+      "Helmet",
+      "Float"
+    ]
+  },
+  {
+    "word": "Kangaroo",
+    "banned": [
+      "Jump",
+      "Pouch",
+      "Australia",
+      "Baby",
+      "Hop"
+    ]
+  },
+  {
+    "word": "Umbrella",
+    "banned": [
+      "Rain",
+      "Wet",
+      "Open",
+      "Handle",
+      "Shade"
+    ]
+  },
+  {
+    "word": "Popcorn",
+    "banned": [
+      "Movie",
+      "Butter",
+      "Kernel",
+      "Microwave",
+      "Salty"
+    ]
+  },
+  {
+    "word": "Dragon",
+    "banned": [
+      "Fire",
+      "Wings",
+      "Breathe",
+      "Scales",
+      "Castle"
+    ]
+  },
+  {
+    "word": "Library",
+    "banned": [
+      "Books",
+      "Quiet",
+      "Borrow",
+      "Shelves",
+      "Read"
+    ]
+  },
+  {
+    "word": "Spider",
+    "banned": [
+      "Web",
+      "Eight",
+      "Legs",
+      "Bug",
+      "Crawl"
+    ]
+  },
+  {
+    "word": "Guitar",
+    "banned": [
+      "Strings",
+      "Music",
+      "Strum",
+      "Rock",
+      "Play"
+    ]
+  },
+  {
+    "word": "Hospital",
+    "banned": [
+      "Doctor",
+      "Sick",
+      "Nurse",
+      "Bed",
+      "Emergency"
+    ]
+  },
+  {
+    "word": "Airplane",
+    "banned": [
+      "Fly",
+      "Pilot",
+      "Wings",
+      "Airport",
+      "Sky"
+    ]
+  },
+  {
+    "word": "Sandwich",
+    "banned": [
+      "Bread",
+      "Lunch",
+      "Ham",
+      "Cheese",
+      "Layers"
+    ]
+  },
+  {
+    "word": "Ghost",
+    "banned": [
+      "Scary",
+      "Spirit",
+      "Halloween",
+      "Haunted",
+      "Sheet"
+    ]
+  },
+  {
+    "word": "Football",
+    "banned": [
+      "Touchdown",
+      "Helmet",
+      "Quarterback",
+      "Tackle",
+      "Field"
+    ]
+  },
+  {
+    "word": "Banana",
+    "banned": [
+      "Yellow",
+      "Fruit",
+      "Peel",
+      "Monkey",
+      "Split"
+    ]
+  },
+  {
+    "word": "Mirror",
+    "banned": [
+      "Reflection",
+      "Glass",
+      "Look",
+      "Bathroom",
+      "Face"
+    ]
+  },
+  {
+    "word": "Pirate",
+    "banned": [
+      "Ship",
+      "Treasure",
+      "Parrot",
+      "Patch",
+      "Sail"
+    ]
+  },
+  {
+    "word": "Clock",
+    "banned": [
+      "Time",
+      "Hands",
+      "Tick",
+      "Wall",
+      "Hour"
+    ]
+  },
+  {
+    "word": "Bicycle",
+    "banned": [
+      "Pedal",
+      "Ride",
+      "Wheels",
+      "Bike",
+      "Helmet"
+    ]
+  },
+  {
+    "word": "Shark",
+    "banned": [
+      "Fish",
+      "Teeth",
+      "Ocean",
+      "Fin",
+      "Bite"
+    ]
+  },
+  {
+    "word": "Ice Cream",
+    "banned": [
+      "Cold",
+      "Cone",
+      "Scoop",
+      "Sweet",
+      "Vanilla"
+    ]
+  },
+  {
+    "word": "Camera",
+    "banned": [
+      "Picture",
+      "Photo",
+      "Snap",
+      "Lens",
+      "Smile"
+    ]
+  },
+  {
+    "word": "Dentist",
+    "banned": [
+      "Teeth",
+      "Doctor",
+      "Cavity",
+      "Drill",
+      "Checkup"
+    ]
+  },
+  {
+    "word": "Fireworks",
+    "banned": [
+      "Sky",
+      "Bang",
+      "Explode",
+      "July",
+      "Colors"
+    ]
+  },
+  {
+    "word": "Moon",
+    "banned": [
+      "Night",
+      "Sky",
+      "Full",
+      "Crater",
+      "Space"
+    ]
+  },
+  {
+    "word": "Chocolate",
+    "banned": [
+      "Candy",
+      "Brown",
+      "Sweet",
+      "Bar",
+      "Cocoa"
+    ]
+  },
+  {
+    "word": "Butterfly",
+    "banned": [
+      "Wings",
+      "Caterpillar",
+      "Colorful",
+      "Insect",
+      "Flower"
+    ]
+  },
+  {
+    "word": "Teacher",
+    "banned": [
+      "School",
+      "Class",
+      "Students",
+      "Homework",
+      "Lesson"
+    ]
+  },
+  {
+    "word": "Pillow",
+    "banned": [
+      "Sleep",
+      "Bed",
+      "Head",
+      "Soft",
+      "Fight"
+    ]
+  },
+  {
+    "word": "Robot",
+    "banned": [
+      "Machine",
+      "Metal",
+      "Beep",
+      "Computer",
+      "Future"
+    ]
+  },
+  {
+    "word": "Tornado",
+    "banned": [
+      "Wind",
+      "Storm",
+      "Spin",
+      "Twister",
+      "Funnel"
+    ]
+  },
+  {
+    "word": "Cookie",
+    "banned": [
+      "Chip",
+      "Bake",
+      "Jar",
+      "Sweet",
+      "Milk"
+    ]
+  },
+  {
+    "word": "Doorbell",
+    "banned": [
+      "Ring",
+      "Ding",
+      "Visitor",
+      "Press",
+      "Front"
+    ]
+  },
+  {
+    "word": "Hamburger",
+    "banned": [
+      "Bun",
+      "Patty",
+      "Beef",
+      "Grill",
+      "Fries"
+    ]
+  },
+  {
+    "word": "Swimming Pool",
+    "banned": [
+      "Water",
+      "Dive",
+      "Splash",
+      "Summer",
+      "Lifeguard"
+    ]
+  },
+  {
+    "word": "Monkey",
+    "banned": [
+      "Banana",
+      "Tree",
+      "Swing",
+      "Ape",
+      "Zoo"
+    ]
+  },
+  {
+    "word": "Waterfall",
+    "banned": [
+      "River",
+      "Cliff",
+      "Drop",
+      "Rocks",
+      "Splash"
+    ]
+  },
+  {
+    "word": "Lemonade",
+    "banned": [
+      "Sour",
+      "Stand",
+      "Yellow",
+      "Summer",
+      "Drink"
+    ]
+  },
+  {
+    "word": "Crown",
+    "banned": [
+      "King",
+      "Queen",
+      "Head",
+      "Gold",
+      "Jewels"
+    ]
+  },
+  {
+    "word": "Rocket",
+    "banned": [
+      "Space",
+      "Launch",
+      "Blast",
+      "Fuel",
+      "Countdown"
+    ]
+  },
+  {
+    "word": "Train",
+    "banned": [
+      "Tracks",
+      "Station",
+      "Ride",
+      "Choo",
+      "Conductor"
+    ]
+  },
+  {
+    "word": "Wedding",
+    "banned": [
+      "Bride",
+      "Marry",
+      "Ring",
+      "Dress",
+      "Cake"
+    ]
+  },
+  {
+    "word": "Owl",
+    "banned": [
+      "Night",
+      "Hoot",
+      "Bird",
+      "Wise",
+      "Eyes"
+    ]
+  },
+  {
+    "word": "Backpack",
+    "banned": [
+      "School",
+      "Bag",
+      "Carry",
+      "Zipper",
+      "Straps"
+    ]
+  },
+  {
+    "word": "Snake",
+    "banned": [
+      "Hiss",
+      "Slither",
+      "Long",
+      "Reptile",
+      "Venom"
+    ]
+  },
+  {
+    "word": "Thunder",
+    "banned": [
+      "Lightning",
+      "Storm",
+      "Loud",
+      "Boom",
+      "Rain"
+    ]
+  },
+  {
+    "word": "Bubble",
+    "banned": [
+      "Soap",
+      "Pop",
+      "Blow",
+      "Float",
+      "Gum"
+    ]
+  },
+  {
+    "word": "Castle",
+    "banned": [
+      "King",
+      "Queen",
+      "Tower",
+      "Knight",
+      "Moat"
+    ]
+  },
+  {
+    "word": "Hot Dog",
+    "banned": [
+      "Bun",
+      "Sausage",
+      "Ketchup",
+      "Mustard",
+      "Grill"
+    ]
+  },
+  {
+    "word": "Cactus",
+    "banned": [
+      "Desert",
+      "Spikes",
+      "Plant",
+      "Green",
+      "Prickly"
+    ]
+  },
+  {
+    "word": "Calendar",
+    "banned": [
+      "Date",
+      "Month",
+      "Days",
+      "Year",
+      "Schedule"
+    ]
+  },
+  {
+    "word": "Zebra",
+    "banned": [
+      "Stripes",
+      "Black",
+      "White",
+      "Horse",
+      "Africa"
+    ]
+  },
+  {
+    "word": "Magician",
+    "banned": [
+      "Trick",
+      "Wand",
+      "Rabbit",
+      "Hat",
+      "Disappear"
+    ]
+  },
+  {
+    "word": "Beach",
+    "banned": [
+      "Sand",
+      "Ocean",
+      "Waves",
+      "Sun",
+      "Towel"
+    ]
+  },
+  {
+    "word": "Scissors",
+    "banned": [
+      "Cut",
+      "Paper",
+      "Sharp",
+      "Blades",
+      "Snip"
+    ]
+  },
+  {
+    "word": "Unicorn",
+    "banned": [
+      "Horn",
+      "Horse",
+      "Magic",
+      "Rainbow",
+      "Fantasy"
+    ]
+  },
+  {
+    "word": "Refrigerator",
+    "banned": [
+      "Cold",
+      "Food",
+      "Kitchen",
+      "Fridge",
+      "Freezer"
+    ]
+  },
+  {
+    "word": "Basketball",
+    "banned": [
+      "Hoop",
+      "Dribble",
+      "Court",
+      "Shoot",
+      "Dunk"
+    ]
+  },
+  {
+    "word": "Turtle",
+    "banned": [
+      "Shell",
+      "Slow",
+      "Reptile",
+      "Green",
+      "Sea"
+    ]
+  },
+  {
+    "word": "Pajamas",
+    "banned": [
+      "Sleep",
+      "Night",
+      "Bed",
+      "Wear",
+      "Comfy"
+    ]
+  },
+  {
+    "word": "Garden",
+    "banned": [
+      "Plants",
+      "Flowers",
+      "Grow",
+      "Dirt",
+      "Vegetables"
+    ]
+  },
+  {
+    "word": "Detective",
+    "banned": [
+      "Mystery",
+      "Clues",
+      "Solve",
+      "Case",
+      "Investigate"
+    ]
+  },
+  {
+    "word": "Map",
+    "banned": [
+      "Directions",
+      "Lost",
+      "Paper",
+      "Treasure",
+      "Roads"
+    ]
+  },
+  {
+    "word": "Skateboard",
+    "banned": [
+      "Wheels",
+      "Tricks",
+      "Ramp",
+      "Deck",
+      "Ollie"
+    ]
+  },
+  {
+    "word": "Microwave",
+    "banned": [
+      "Heat",
+      "Kitchen",
+      "Beep",
+      "Popcorn",
+      "Food"
+    ]
+  },
+  {
+    "word": "Igloo",
+    "banned": [
+      "Ice",
+      "Snow",
+      "House",
+      "Cold",
+      "Dome"
+    ]
+  },
+  {
+    "word": "Mermaid",
+    "banned": [
+      "Tail",
+      "Ocean",
+      "Fish",
+      "Swim",
+      "Princess"
+    ]
+  },
+  {
+    "word": "Ladder",
+    "banned": [
+      "Climb",
+      "Steps",
+      "Up",
+      "High",
+      "Rungs"
+    ]
+  },
+  {
+    "word": "Thermometer",
+    "banned": [
+      "Temperature",
+      "Hot",
+      "Cold",
+      "Fever",
+      "Degrees"
+    ]
+  },
+  {
+    "word": "Popsicle",
+    "banned": [
+      "Stick",
+      "Cold",
+      "Frozen",
+      "Summer",
+      "Lick"
+    ]
+  },
+  {
+    "word": "Alarm Clock",
+    "banned": [
+      "Wake",
+      "Morning",
+      "Ring",
+      "Snooze",
+      "Bed"
+    ]
+  },
+  {
+    "word": "Giraffe",
+    "banned": [
+      "Neck",
+      "Tall",
+      "Spots",
+      "Africa",
+      "Leaves"
+    ]
+  },
+  {
+    "word": "Bridge",
+    "banned": [
+      "River",
+      "Cross",
+      "Over",
+      "Water",
+      "Cars"
+    ]
+  },
+  {
+    "word": "Superhero",
+    "banned": [
+      "Powers",
+      "Cape",
+      "Save",
+      "Villain",
+      "Fly"
+    ]
+  },
+  {
+    "word": "Candle",
+    "banned": [
+      "Wax",
+      "Flame",
+      "Light",
+      "Birthday",
+      "Wick"
+    ]
+  },
+  {
+    "word": "Puzzle",
+    "banned": [
+      "Pieces",
+      "Fit",
+      "Jigsaw",
+      "Solve",
+      "Picture"
+    ]
+  },
+  {
+    "word": "Vampire",
+    "banned": [
+      "Blood",
+      "Bite",
+      "Fangs",
+      "Dracula",
+      "Night"
+    ]
+  },
+  {
+    "word": "Hammer",
+    "banned": [
+      "Nail",
+      "Tool",
+      "Hit",
+      "Build",
+      "Bang"
+    ]
+  },
+  {
+    "word": "Parachute",
+    "banned": [
+      "Jump",
+      "Sky",
+      "Plane",
+      "Fall",
+      "Diving"
+    ]
+  },
+  {
+    "word": "Octopus",
+    "banned": [
+      "Eight",
+      "Arms",
+      "Ocean",
+      "Ink",
+      "Tentacles"
+    ]
+  },
+  {
+    "word": "Sunglasses",
+    "banned": [
+      "Eyes",
+      "Dark",
+      "Wear",
+      "Shades",
+      "Summer"
+    ]
+  },
+  {
+    "word": "Telescope",
+    "banned": [
+      "Stars",
+      "Space",
+      "Look",
+      "Far",
+      "Lens"
+    ]
+  },
+  {
+    "word": "Cereal",
+    "banned": [
+      "Breakfast",
+      "Milk",
+      "Bowl",
+      "Spoon",
+      "Crunchy"
+    ]
+  },
+  {
+    "word": "Tent",
+    "banned": [
+      "Camping",
+      "Sleep",
+      "Outside",
+      "Poles",
+      "Zip"
+    ]
+  },
+  {
+    "word": "Dinosaur",
+    "banned": [
+      "Extinct",
+      "Fossil",
+      "Bones",
+      "Big",
+      "Prehistoric"
+    ]
+  },
+  {
+    "word": "Pumpkin",
+    "banned": [
+      "Orange",
+      "Halloween",
+      "Pie",
+      "Carve",
+      "Patch"
+    ]
+  },
+  {
+    "word": "Piano",
+    "banned": [
+      "Keys",
+      "Music",
+      "Play",
+      "Black",
+      "White"
+    ]
+  },
+  {
+    "word": "Firefighter",
+    "banned": [
+      "Truck",
+      "Hose",
+      "Flames",
+      "Rescue",
+      "Siren"
+    ]
+  },
+  {
+    "word": "Snowball",
+    "banned": [
+      "Throw",
+      "Fight",
+      "Cold",
+      "Winter",
+      "White"
+    ]
+  },
+  {
+    "word": "Bee",
+    "banned": [
+      "Honey",
+      "Buzz",
+      "Sting",
+      "Yellow",
+      "Hive"
+    ]
+  },
+  {
+    "word": "Treasure",
+    "banned": [
+      "Gold",
+      "Pirate",
+      "Chest",
+      "Map",
+      "Buried"
+    ]
+  }
+]
